@@ -1,0 +1,252 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><title>Ручечник</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#eef0f5;--c:#fff;--t:#1b1d24;--a:#5b6cff;--a2:#8a5bff;--m:#7b8090;--l:#e1e4ee;--st:100;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#14151a;--c:#1f2128;--t:#eceef5;--m:#9096a8;--l:#31343f}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;background:var(--bg);color:var(--t);font:15px system-ui,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;font-weight:700;font-size:17px}
+#hd span{background:var(--c);padding:5px 10px;border-radius:20px;font-size:13px;margin-left:5px;box-shadow:0 1px 4px #0001}
+nav{display:flex;gap:5px;padding:0 10px 8px;position:sticky;top:0;z-index:9;background:var(--bg);overflow-x:auto}
+nav button{flex:1;font-size:12px;padding:9px 8px;white-space:nowrap}
+button,input,select{font:inherit;padding:9px 12px;border-radius:12px;border:1px solid var(--l);background:var(--c);color:var(--t);transition:transform .15s,background .25s,box-shadow .25s}
+button:active{transform:scale(.94)}button.on,button.p{background:linear-gradient(135deg,var(--a),var(--a2));color:#fff;border-color:transparent;box-shadow:0 4px 12px #5b6cff55}
+.card{background:var(--c);border:1px solid var(--l);border-radius:18px;padding:12px;margin:10px;animation:in .45s both;box-shadow:0 2px 10px #0000000a}
+.card:nth-child(2){animation-delay:.05s}.card:nth-child(3){animation-delay:.1s}.card:nth-child(4){animation-delay:.15s}.card:nth-child(5){animation-delay:.2s}
+@keyframes in{from{opacity:0;transform:translateY(14px)}}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px}.m{color:var(--m);font-size:13px}h4{margin:0 0 4px}
+.penw{display:flex;justify-content:center;overflow:hidden;background:linear-gradient(#f7f8fc,#e6e9f2);border-radius:14px;padding:8px}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .penw{background:linear-gradient(#2a2d38,#20222b)}}
+svg.pen{width:100%;height:auto;filter:drop-shadow(0 6px 5px #0003);animation:fl 4s ease-in-out infinite}
+.sm svg.pen{animation:none}@keyframes fl{50%{transform:translateY(-3px) rotate(-.6deg)}}
+.bar{height:7px;background:var(--l);border-radius:5px;overflow:hidden;margin:3px 0 7px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--a2));transition:width .5s}
+.dot{width:30px;height:30px;padding:0;border-radius:50%;border:3px solid var(--l)}.dot.on{border-color:var(--a);transform:scale(1.15)}
+#stage{position:relative;height:56vh;margin:10px;border-radius:14px;overflow:hidden;background:#fffdf5;background-image:linear-gradient(#cfe0f3 1px,transparent 1px),linear-gradient(90deg,#cfe0f3 1px,transparent 1px);background-size:20px 20px}
+#paper{position:absolute;inset:0;width:100%;height:100%}
+#pn{position:absolute;left:0;top:0;width:340px;transform-origin:0 33%;transition:transform .07s linear,filter .2s;pointer-events:none}
+#pn svg{width:100%;animation:none}#pn.h{filter:drop-shadow(0 0 6px #5b6cff)}
+#pad{position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));width:42vw;max-width:260px;height:26vh;background:var(--c);border:2px solid var(--a);border-radius:16px;touch-action:none;z-index:5;display:flex;align-items:center;justify-content:center;color:var(--m)}
+#pb{position:fixed;right:10px;bottom:calc(26vh + 20px);display:flex;gap:6px;z-index:5}
+#toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);background:#222;color:#fff;padding:10px 16px;border-radius:20px;opacity:0;transition:.3s;z-index:99;pointer-events:none}#toast.s{opacity:1;transform:translate(-50%,0)}
+#mg{position:fixed;inset:0;background:#000a;z-index:50;display:flex;align-items:center;justify-content:center;animation:in .3s}
+#mg .card{width:92%;max-width:420px;text-align:center}
+.trk{position:relative;height:38px;background:var(--l);border-radius:20px;margin:10px 0;overflow:hidden}.zn{position:absolute;top:0;bottom:0;background:#3ecf7a99}.mk{position:absolute;top:3px;bottom:3px;width:8px;border-radius:4px;background:var(--a)}
+body{background:radial-gradient(900px 500px at 10% -10%,#c9d3ff 0,transparent 60%),radial-gradient(700px 500px at 100% 10%,#ffd3f0 0,transparent 55%),radial-gradient(800px 600px at 50% 110%,#c4f1ff 0,transparent 60%),var(--bg);background-attachment:fixed;overflow-x:hidden}
+#root{transform-origin:0 0}
+header span:first-child{font-size:23px;font-weight:800;background:linear-gradient(90deg,var(--a),var(--a2),#ff6bb5);-webkit-background-clip:text;background-clip:text;color:transparent}
+#hd span{backdrop-filter:blur(8px);background:#ffffffaa;border:1px solid #fff8;font-weight:600}
+nav{backdrop-filter:blur(14px);background:#ffffff77;margin:0 10px 8px;border-radius:24px;padding:6px;border:1px solid #fffa;box-shadow:0 8px 24px #5b6cff22;top:6px;scrollbar-width:none}nav::-webkit-scrollbar{display:none}
+nav button{display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:transparent;box-shadow:none;border-radius:18px;padding:7px 12px;min-width:66px;color:var(--m)}
+nav button .ic{font-size:21px;line-height:1;transition:transform .3s}nav button small{font-size:10.5px;font-weight:600}
+nav button.on{background:linear-gradient(135deg,var(--a),var(--a2));color:#fff;box-shadow:0 6px 16px #5b6cff66}nav button.on .ic{transform:translateY(-2px) scale(1.2)}
+.card{background:#ffffffc4;backdrop-filter:blur(12px);border:1px solid #ffffffd0;border-radius:24px;padding:15px;box-shadow:0 10px 30px #3a4bd01c;animation:none}
+#app.an .card{animation:in .5s cubic-bezier(.2,.8,.2,1) both}
+.card h4{font-size:16px;display:flex;align-items:center;gap:8px;margin-bottom:6px}.card h4:before{content:'';width:4px;height:16px;border-radius:2px;background:linear-gradient(var(--a),var(--a2))}
+.row button:hover{transform:translateY(-1px);box-shadow:0 4px 12px #0002}
+.penw{background:radial-gradient(circle at 50% 0,#fff,#e4e8f7);box-shadow:inset 0 0 0 1px #fff,0 8px 24px #3a4bd022;border-radius:20px;padding:16px 8px}
+.bar{height:9px;border-radius:6px}.bar i{box-shadow:0 0 10px #8a5bff88}
+#stage{border-radius:24px;box-shadow:0 12px 30px #0003}#pad{backdrop-filter:blur(10px);background:#ffffffd8;box-shadow:0 10px 30px #5b6cff55}
+select,input{border-radius:14px}
+.spn{transform-box:fill-box;transform-origin:center;animation:spn .5s linear infinite}@keyframes spn{50%{transform:scaleY(.15)}}
+#bz svg.pen{animation:none}
+.sg{animation:sw2 3s ease-in-out infinite alternate}@keyframes sw2{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
+@keyframes sw{from{transform:rotate(calc(var(--a)*-1))}to{transform:rotate(var(--a))}}#pn.h .sg{animation:sw .22s ease-in-out infinite alternate}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) body{background:radial-gradient(900px 500px at 10% -10%,#2b2f6b 0,transparent 60%),radial-gradient(700px 500px at 100% 10%,#4a2160 0,transparent 55%),radial-gradient(800px 600px at 50% 110%,#123a52 0,transparent 60%),var(--bg)}:root:not([data-theme=light]) nav{background:#1f2128aa;border-color:#ffffff14}:root:not([data-theme=light]) .card{background:#1f2128cc;border-color:#ffffff12}:root:not([data-theme=light]) .penw{background:radial-gradient(circle at 50% 0,#3a3e50,#1d1f27)}:root:not([data-theme=light]) #hd span{background:#ffffff18;border-color:#ffffff14}:root:not([data-theme=light]) #pad{background:#1f2128dd}}
+@media not all{html:root:root{--bg:#ffe27a;--c:#fffaf0;--t:#111;--m:#5a5a5a;--l:#111;--a:#ff5d8f;--a2:#ff9a3d;color-scheme:light}
+body{background:#ffe27a radial-gradient(#0002 1.4px,transparent 1.6px) 0 0/18px 18px !important;font-family:'Trebuchet MS',Verdana,system-ui,sans-serif}
+#root{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+header{order:1;padding:14px 14px 6px}main{order:2;flex:1;padding-bottom:14px}
+header span:first-child{background:#111 !important;-webkit-text-fill-color:#ffe27a;color:#ffe27a !important;padding:4px 12px;border-radius:10px;transform:rotate(-2deg);display:inline-block;box-shadow:4px 4px 0 #ff5d8f;font-size:22px}
+#hd span{background:#fffaf0 !important;border:2.5px solid #111 !important;box-shadow:2px 2px 0 #111 !important;backdrop-filter:none !important}
+nav{order:3;position:sticky !important;bottom:0;top:auto !important;margin:0 !important;border-radius:0 !important;background:#111 !important;border:0 !important;padding:8px 6px !important;box-shadow:none !important;backdrop-filter:none !important;justify-content:space-between;overflow:hidden !important;gap:2px}
+nav button{flex:1;min-width:0 !important;padding:6px 2px !important;color:#bbb !important;border:0 !important;background:transparent !important;box-shadow:none !important;border-radius:12px !important}nav button small{font-size:9.5px}
+nav button.on{background:#ffe27a !important;color:#111 !important;transform:translateY(-6px)}
+.card{background:#fffaf0 !important;backdrop-filter:none !important;border:2.5px solid #111 !important;border-radius:16px !important;box-shadow:5px 5px 0 #111 !important;margin:14px !important}
+.card .card{box-shadow:3px 3px 0 #111 !important;margin:8px 0 !important}
+.card h4{font-size:17px;text-transform:uppercase;letter-spacing:.5px}.card h4:before{background:#ff5d8f !important;width:14px !important;height:14px !important;border-radius:50% !important;border:2px solid #111}
+button,input,select{border:2px solid #111 !important;border-radius:12px !important;background:#fff !important;color:#111 !important;box-shadow:2px 2px 0 #111;font-weight:700}
+button:active{transform:translate(2px,2px);box-shadow:0 0 0 #111}
+button.on,button.p{background:#ff5d8f !important;color:#111 !important;box-shadow:3px 3px 0 #111 !important}
+nav button.on{box-shadow:none !important;background:#ffe27a !important}
+button.dot{box-shadow:none !important;border:3px solid #111 !important}button.dot.on{outline:3px solid #ff5d8f}
+.penw{background:#fff !important;border:2.5px solid #111;box-shadow:inset 0 0 0 4px #ffe27a !important;border-radius:14px !important}
+.bar{border:2px solid #111;height:12px;background:#fff !important}.bar i{background:#ff5d8f !important;box-shadow:none !important}
+#toast{background:#111;border:2px solid #ffe27a;color:#ffe27a}.m{color:#555 !important}}
+@keyframes sw2{from{transform:rotate(calc(var(--base,0deg) - 2deg))}to{transform:rotate(calc(var(--base,0deg) + 2deg))}}
+@keyframes sw{from{transform:rotate(calc(var(--base,0deg) - var(--a)))}to{transform:rotate(calc(var(--base,0deg) + var(--a)))}}
+#tp.h .sg{animation:sw .22s ease-in-out infinite alternate}#tp svg{width:100%;animation:none}#tp.h{filter:drop-shadow(0 0 6px #ff5d8f)}
+:root{--bl:18px;--fb:0px}
+#root{display:flex;flex-direction:column;filter:blur(var(--fb));transition:filter .4s}
+header{order:1;padding:18px 18px 6px}header span:first-child{font-size:32px;letter-spacing:-.5px}main{order:2;flex:1}
+nav{order:3;position:sticky;bottom:10px;top:auto;margin:6px 14px 12px;padding:5px;border-radius:30px;gap:0;overflow:hidden;justify-content:space-between;background:rgba(255,255,255,.5);backdrop-filter:blur(var(--bl)) saturate(190%);-webkit-backdrop-filter:blur(var(--bl)) saturate(190%);border:1px solid rgba(255,255,255,.8);box-shadow:0 12px 40px rgba(40,50,120,.22),inset 0 1px 0 rgba(255,255,255,.9)}
+nav .hl{position:absolute;top:5px;bottom:5px;left:5px;width:0;border-radius:24px;background:rgba(255,255,255,.92);box-shadow:0 4px 14px rgba(60,70,160,.25),inset 0 1px 0 #fff;transition:left .55s cubic-bezier(.3,1.35,.45,1),width .55s cubic-bezier(.3,1.35,.45,1)}
+nav button{position:relative;z-index:1;flex:1;min-width:0;padding:7px 2px;border:0;background:transparent;box-shadow:none;color:var(--m);border-radius:24px;transition:color .3s,transform .35s cubic-bezier(.3,1.5,.5,1)}
+nav button.on{background:transparent;box-shadow:none;color:var(--a)}nav button.on .ic{transform:translateY(-1px) scale(1.2)}
+.card{background:rgba(255,255,255,.58);backdrop-filter:blur(var(--bl)) saturate(180%);-webkit-backdrop-filter:blur(var(--bl)) saturate(180%);border:1px solid rgba(255,255,255,.85);border-radius:26px;padding:16px;box-shadow:0 10px 34px rgba(50,60,150,.14),inset 0 1px 0 rgba(255,255,255,.9)}
+.card .card{background:rgba(255,255,255,.45);border-radius:20px;box-shadow:none}
+#app.an .card{animation:pop .7s cubic-bezier(.2,.9,.3,1.15) both}
+#app.an .card:nth-child(2){animation-delay:.06s}#app.an .card:nth-child(3){animation-delay:.12s}#app.an .card:nth-child(4){animation-delay:.18s}#app.an .card:nth-child(5){animation-delay:.24s}#app.an .card:nth-child(6){animation-delay:.3s}
+@keyframes pop{0%{opacity:0;transform:translateY(26px) scale(.95)}100%{opacity:1;transform:none}}
+button,input,select{border-radius:16px;border:1px solid rgba(255,255,255,.8);background:rgba(255,255,255,.65);transition:transform .35s cubic-bezier(.3,1.5,.5,1),box-shadow .3s,background .3s}
+button:active{transform:scale(.93)}
+button.on,button.p{background:linear-gradient(135deg,#6a7bff,#8a5bff);color:#fff;border-color:transparent;box-shadow:0 6px 18px rgba(106,123,255,.45)}
+nav button.on{background:transparent;color:var(--a);box-shadow:none}
+.penw{border-radius:22px;background:linear-gradient(160deg,rgba(255,255,255,.85),rgba(225,230,250,.6));border:1px solid #fff9}
+#hd span{backdrop-filter:blur(var(--bl));background:rgba(255,255,255,.6)}
+input[type=range]{accent-color:#6a7bff;height:30px}
+#tpad{border:1.5px solid rgba(255,255,255,.9) !important;box-shadow:0 10px 30px rgba(0,0,0,.25) !important;backdrop-filter:blur(var(--bl));background:rgba(255,255,255,.7) !important}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) nav{background:rgba(40,42,54,.55);border-color:rgba(255,255,255,.12)}:root:not([data-theme=light]) nav .hl{background:rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}:root:not([data-theme=light]) .card{background:rgba(36,38,50,.6);border-color:rgba(255,255,255,.1)}:root:not([data-theme=light]) .card .card{background:rgba(255,255,255,.06)}:root:not([data-theme=light]) .card button:not(.on):not(.p),:root:not([data-theme=light]) .card input,:root:not([data-theme=light]) .card select{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.12)}:root:not([data-theme=light]) #hd span{background:rgba(255,255,255,.1)}:root:not([data-theme=light]) .penw{background:linear-gradient(160deg,rgba(70,74,96,.8),rgba(35,37,50,.7));border-color:rgba(255,255,255,.1)}}
+</style></head><body>
+<div id="root"><header><span>🖊 Ручечник</span><div id="hd"></div></header><nav id="nav"></nav><main id="app"></main></div><div id="toast"></div><div id="fx"></div>
+<script>
+const B=[{id:'bic',n:'BIC Cristal',c:'#bcd6ee',v:20,p:0,clear:1,cap:'#1e4fd8'},{id:'ek',n:'Erich Krause R-301',c:'#cfe8ff',v:25,p:30,clear:1,cap:'#2f7ae5'},{id:'ber',n:'Berlingo Triumph',c:'#7fb4ff',v:35,p:45,cap:'#2b66c9'},{id:'au',n:'Pilot G-2',c:'#22304f',v:90,p:110},{id:'fr',n:'Pilot Frixion',c:'#d9e6ff',v:80,p:100,cap:'#e0455a'},{id:'jet',n:'Uni Jetstream',c:'#2b2b33',v:100,p:125},{id:'al',n:'Parker Jotter',c:'#aeb4bd',v:120,p:140},{id:'wd',n:'Pentel Energel',c:'#e8eef8',v:150,p:170},{id:'br',n:'Cross Century',c:'#c9a227',v:220,p:250}];
+const R=[{id:'g5',n:'Pilot G-2 0.5',w:1.2,s:.9,v:40},{id:'g7',n:'Pentel Energel 0.7',w:1.8,s:.85,v:40},{id:'bp',n:'BIC Cristal 1.0',w:2.4,s:.6,v:25},{id:'ro',n:'Uni-ball Eye 0.5',w:1.4,s:.95,v:70},{id:'fl',n:'Stabilo Point 88',w:1.6,s:.8,v:60},{id:'ol',n:'Parker QuinkFlow 0.7',w:2,s:.97,v:90},{id:'fp',n:'Lamy T10 (перо)',w:2.8,s:.7,v:120}];
+const G={tape:{n:'Изолента',c:['#1a1a1a','#2a5db0','#c43030','#f2f2f2','#e8d9a8','#2f9e5b','#f2c230','#e8590c','#7a3fc0','#e0457b'],cm:[.4,.6,.8,1,.9,.6]},thr:{n:'Нитки',c:['#25252d','#d96b9a','#3d8f5a'],cm:[.4,.7,.9,1,.95,.8]},rub:{n:'Резинка',c:['#d33','#222','#38c','#8d8','#fd5','#b9e'],cm:[.4,.6,.8,.95,1,.85]},spr:{n:'Пружинка',c:['#e33','#3a6','#fa0','#7a3fc0','#f2f2f2'],cm:[.4,.7,.85,.95,1,.9]}};
+const gB=i=>B.find(x=>x.id==i),gR=i=>R.find(x=>x.id==i),$=id=>document.getElementById(id);
+const mk=(b,r)=>({id:Math.random().toString(36).slice(2),b,r,g:'tape',gc:0,gl:0,cap:1,susp:0,ink:null,done:0,lf:0,im:0,sn:0,ch:0});
+let S;try{S=JSON.parse(localStorage.getItem('pg2'))}catch(e){}
+S=S||{m:600,n:0,pens:[mk('bic','g5')],st:{r:{g7:1,ro:1},t:5,sp:2},L:[],tab:'w',sel:0,set:{st:100}};
+const sv=()=>{try{localStorage.setItem('pg2',JSON.stringify(S))}catch(e){}};
+const comfort=p=>G[p.g].cm[p.gl],bal=p=>1-Math.abs(p.cap-.4)-(p.susp?.05:0);
+const val=p=>Math.round(gB(p.b).v+gR(p.r).v+comfort(p)*40+bal(p)*30+p.susp*60+(p.ink?50:0)+(p.lf?30:0)+(p.im?40:0)+(p.sn?35:0));
+const capTxt=p=>p.cap==1?'колпачок целый':p.cap?'колпачок подрезан':'без колпачка';
+const desc=p=>`${p.gl?G[p.g].n+' ×'+p.gl:'без обмотки'} · ${capTxt(p)}${p.susp?(p.ch?' · цепочка':' · подвеска ')+(p.ch?'':Math.round(p.susp*100)+'%'):''}${p.lf?' · мини люфт':''}${p.im?' · пропитка':''}${p.sn?' · крутилка':''}`;
+function toast(t){const e=$('toast');e.textContent=t;e.className='s';clearTimeout(toast.h);toast.h=setTimeout(()=>e.className='',2200)}
+let U=0;
+function svg(p){const u=++U,b=gB(p.b),e=300+p.cap*90,g=p.gl,gc=G[p.g].c[p.gc]||G[p.g].c[0],ink=p.ink||'#1b3bd0';
+let o=`<svg class="pen" viewBox="0 0 430 90"><defs><linearGradient id="s${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></linearGradient><linearGradient id="m${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f5f7"/><stop offset=".5" stop-color="#7d838d"/><stop offset="1" stop-color="#dfe2e7"/></linearGradient></defs>`;
+const ot=p.open?'transform="translate(0 34)"':'';o+=`<g ${ot}><path d="M40 18L14 27v6l26 9z" fill="${b.c}"/><path d="M14 27L0 30l14 3z" fill="url(#m${u})"/></g><rect x="40" y="18" width="262" height="24" rx="5" fill="${b.c}" ${b.clear?'fill-opacity=".55"':''}/>`;
+if(b.clear)o+=`<rect x="46" y="27.5" width="250" height="5" rx="2.5" fill="${ink}" opacity=".9"/><path d="M40 24h262M40 36h262" stroke="#fff" stroke-opacity=".5"/>`;
+if(b.id=='au')o+=`<rect x="56" y="16" width="40" height="28" rx="6" fill="#171b26"/>`;
+o+=`<path ${ot} d="M40 18L14 27v6l26 9z" fill="url(#s${u})"/><rect x="40" y="18" width="262" height="24" rx="5" fill="url(#s${u})"/><rect x="302" y="24" width="9" height="12" rx="3" fill="url(#m${u})"/>`;
+if(g){const x0=52,w=92,r=g*1.2;
+if(p.g=='spr'){for(let i=0;i<15;i++)o+=`<ellipse class="wr" cx="${x0+i*6.2}" cy="30" rx="2.6" ry="${12+r}" fill="none" stroke="${gc}" stroke-width="3.2"/><ellipse cx="${x0+i*6.2-.8}" cy="${22-r/2}" rx=".8" ry="3" fill="#fff" opacity=".5"/>`}
+else if(p.g=='rub'){for(let i=0;i<5;i++)o+=`<rect class="wr" x="${x0+i*19}" y="${17-r}" width="12" height="${26+2*r}" rx="6" fill="${gc}"/><rect x="${x0+i*19+2}" y="${19-r}" width="3" height="${22+2*r}" rx="1.5" fill="#fff" opacity=".35"/>`}
+else{o+=`<rect class="wr" x="${x0}" y="${18-r}" width="${w}" height="${24+2*r}" rx="${p.g=='thr'?8:4}" fill="${gc}"/>`;
+o+=p.g=='thr'?`<rect x="${x0}" y="${18-r}" width="${w}" height="${24+2*r}" rx="8" fill="none" stroke="#fff" stroke-opacity=".35" stroke-dasharray="1.5 2.5"/>`:`<path d="${Array.from({length:14},(_,i)=>`M${x0+i*7} ${18-r}l4 ${24+2*r}`).join('')}" stroke="#000" stroke-opacity=".28"/>`;
+o+=`<rect x="${x0}" y="${18-r}" width="${w}" height="${24+2*r}" rx="5" fill="url(#s${u})"/>`}}
+if(p.wc)for(let i=0;i<p.wc;i++)o+=`<ellipse cx="${262+i*4.2}" cy="30" rx="2" ry="13" fill="none" stroke="#c0394b" stroke-width="2.4"/>`;
+if(p.sn)o+=`<g class="spn"><rect x="196" y="4" width="11" height="52" rx="5.5" fill="#e0455a"/><rect x="198" y="6" width="3" height="48" rx="1.5" fill="#fff" opacity=".5"/></g>`;
+if(p.cap){const cw=p.cap*90,cc=b.cap||b.c;o+=`<rect x="300" y="14" width="${cw}" height="32" rx="8" fill="${cc}"/><rect x="300" y="14" width="${cw}" height="32" rx="8" fill="url(#s${u})"/><rect x="300" y="9" width="${Math.min(56,cw-8)}" height="6" rx="3" fill="url(#m${u})"/>`}
+if(p.susp){const q=p.susp,rx=e+11;o+=`<g class="sg" style="transform-origin:${rx}px 22px;--a:${Math.round((1-q)*16+4)}deg"><circle cx="${rx}" cy="30" r="9" fill="none" stroke="${p.lp?'#e8d9a8':'url(#m'+u+')'}" stroke-width="${p.lp?4:3}"/>`;for(let i=0;i<(p.lp?0:10);i++)o+=`<ellipse cx="${rx+(1-q)*4*Math.sin(i*2.3)}" cy="${42+i*4.6}" rx="${p.ch?2.6:5-i*.1}" ry="${p.ch?2.6:2.2}" fill="${p.ch?'#c9ced6':'none'}" stroke="#8e949e" stroke-width="1.7"/>`;o+='</g>'}
+if(p.open)o+=`<rect x="12" y="3" width="${276*(p.rl||1)}" height="7" rx="3.5" fill="#e3e9f3"/><rect x="40" y="4.8" width="${240*(p.rl||1)}" height="3.4" rx="1.7" fill="${ink}"/><path d="M12 3l-9 3.5 9 3.5z" fill="#8c929c"/>`;return o+'</svg>'}
+const wrap=(p,c='')=>`<div class="penw ${c}">${svg(p)}</div>`;
+function head(){$('hd').innerHTML=`<span>💰 ${S.m} ₽</span><span>✔ ${S.n}</span>`;$('nav').innerHTML=[['w','🛠 Мастерская'],['t','✍ Тест'],['m','🏷 Рынок'],['s','🎒 Склад'],['sh','🛒 Магазин'],['x','⚙']].map(([k,n])=>`<button class="${S.tab==k?'on':''}" onclick="S.tab='${k}';go()" ${k=='x'?'style="flex:.4"':''}>${n.split(' ').map((s,i)=>i?`<small>${s}</small>`:`<span class="ic">${s}</span>`).join('')}</button>`).join('')}
+function sel(){if(S.sel>=S.pens.length)S.sel=0;return S.pens[S.sel]}
+const pick=()=>`<select style="width:100%;margin-bottom:8px" onchange="S.sel=+this.value;go()">${S.pens.map((p,i)=>`<option value="${i}" ${i==S.sel?'selected':''}>${gB(p.b).n} · ${gR(p.r).n} · ${val(p)}₽</option>`).join('')}</select>`;
+const bar=(n,v)=>`<div class="m">${n} ${Math.round(v*100)}%</div><div class="bar"><i style="width:${Math.max(0,v)*100}%"></i></div>`;
+function work(){const p=sel();if(!p)return '<div class="card">Нет ручек — купи корпус во вкладке «Магазин».</div>';const gt=G[p.g];
+return `<div class="card">${pick()}${wrap(p)}<div class="m" style="margin:8px 0">${desc(p)} · ${gR(p.r).n}</div>${bar('Удобство хвата',comfort(p))}${bar('Баланс',bal(p))}<b>Цена ~${val(p)}₽</b></div>
+<div class="card"><h4>Обмотка хвата</h4><div class="m">Материал: ${S.st.t} шт. Идеально 3 слоя.</div><div class="row">${Object.entries(G).map(([k,v])=>`<button class="${p.g==k?'on':''}" onclick="gm('${k}')">${v.n}</button>`).join('')}</div><div class="row">${gt.c.map((c,i)=>`<button class="dot ${p.gc==i?'on':''}" style="background:${c}" onclick="sel().gc=${i};go()"></button>`).join('')}</div><div class="row"><button onclick="wr(1)">+ слой</button><button onclick="wr(-1)">− слой</button><button onclick="wr(-9)">Снять всё</button></div></div>
+<div class="card"><h4>Колпачок и подвеска</h4><div class="row"><button onclick="cap(0)">Подрезать</button><button onclick="cap(1)">Убрать колпачок</button><button class="p" onclick="mgStart()">🔗 Сделать подвеску</button><button onclick="chain()">⛓ Цепочка</button></div><div class="m">Подвеска: нужна пружинка (${S.st.sp}), мини-игра на 8 витков.</div></div>
+<div class="card"><h4>Тюнинг</h4><div class="m">Мини люфт — ручка слегка играет в руке. Пропитка — чернила ложатся ровнее. Крутилка — крутится на корпусе.</div><div class="row"><button class="${p.lf?'on':''}" onclick="tg('lf')">Мини люфт</button><button class="${p.im?'on':''}" onclick="tg('im')">Пропитка (${S.st.im||0})</button><button class="${p.sn?'on':''}" onclick="tg('sn')">Крутилка (${S.st.kr||0})</button></div></div><div class="card"><h4>Стержень</h4><div class="row">${Object.entries(S.st.r).filter(e=>e[1]>0).map(([k,c])=>`<button onclick="swap('${k}')">${gR(k).n} ×${c}</button>`).join('')||'<span class="m">нет запасных</span>'}</div>${S.n>=50?`<div class="row"><span>Свои чернила</span><input type="color" value="${p.ink||'#1030a0'}" onchange="sel().ink=this.value;sv();go()"></div>`:`<div class="m" style="margin-top:6px">Свои чернила — после 50 ручек (${S.n}/50)</div>`}</div>
+<div class="card"><button class="p" style="width:100%" onclick="fin()">Завершить сборку (+1 в счёт)</button></div>`}
+function shop(){return `<div class="card"><h4>Магазин</h4><div class="m">Материал: ${S.st.t} · Пружинки: ${S.st.sp}</div><div class="row">${B.filter(b=>b.p).map(b=>`<button onclick="buy('b','${b.id}',${b.p})">${b.n} ${b.p}₽</button>`).join('')}${R.map(r=>`<button onclick="buy('r','${r.id}',${r.v})">${r.n} ${r.v}₽</button>`).join('')}<button onclick="buy('t',0,20)">Материал 20₽</button><button onclick="buy('sp',0,25)">Пружинка 25₽</button><button onclick="buy('im',0,30)">Пропитка 30₽</button><button onclick="buy('kr',0,40)">Крутилка 40₽</button></div></div>`}
+function tg(k){const p=sel();if(p[k]){p[k]=0;if(k=='sn')S.st.kr=(S.st.kr||0)+1}else{if(k=='im'){if(!(S.st.im>0))return toast('Нужна пропитка (магазин)');S.st.im--}if(k=='sn'){if(!(S.st.kr>0))return toast('Нужна крутилка (магазин)');S.st.kr--}p[k]=1}sv();go()}
+let bt='wind',bx=null,bacc=0;
+const HINT={refill:'Раскрути ручку (🔧) и води по стержню — обрежется ножницами там, где отпустишь',loop:'Закрой ручку с обрезанным стержнем и протяни вправо от торца — скоч скрутит петлю (подвеска без пружинки)',wind:'Води пальцем по хвату туда-сюда — ручка обматывается по-настоящему',unwind:'Води по хвату — обмотка разматывается',cap:'Тяни по колпачку влево — отрежется там, где отпустишь',open:'Тяни кончик влево — ручка раскрутится, стержень вынется. Вправо — закрутится',wire:'Води по задней части ручки — проволока навивается виток за витком',chain:'Протяни вправо от торца ручки — цепочка прицепится'};
+const vx=e=>{const r=$('bz').getBoundingClientRect();return(e.clientX-r.left)/r.width*430};
+function bdown(e){$('bz').setPointerCapture(e.pointerId);bx=vx(e);bacc=0}
+function bup(){if(bx==null)return;bx=null;sv();go()}
+function bstat(p){return `<div class="m" style="margin:8px 0">${desc(p)}${p.open?' · РАЗОБРАНА':''}</div>${bar('Удобство хвата',comfort(p))}${bar('Баланс',bal(p))}<b>Цена ~${val(p)}₽</b>`}
+function bmove(e){if(bx==null)return;const p=sel(),x=vx(e),dx=x-bx;bx=x;let ch=0;
+if(bt=='wind'||bt=='unwind'){if(x>40&&x<170){let P=p.gp==null?p.gl:p.gp;const n=bt=='wind'?Math.min(5,P+Math.abs(dx)/220):Math.max(0,P-Math.abs(dx)/220);if(bt=='wind'&&Math.floor(n)>p.gl){if(S.st.t<1)return toast('Материал кончился');S.st.t--}p.gp=n;p.gl=Math.floor(n);ch=1}}
+else if(bt=='cap'){if(p.cap>0&&x>295){const c=Math.min(p.cap,Math.max(0,(x-300)/90));p.cap=c<.1?0:c;ch=1}}
+else if(bt=='open'){bacc+=dx;if(!p.open&&bacc<-45){p.open=1;bacc=0;ch=1}else if(p.open&&bacc>45){p.open=0;bacc=0;ch=1}}
+else if(bt=='wire'){if(x>230){bacc+=Math.abs(dx);while(bacc>=20&&(p.wc||0)<10){if(!p.wc){if(S.st.sp<1){bacc=0;return toast('Нужна пружинка — купи в магазине')}S.st.sp--}p.wc=(p.wc||0)+1;p.susp=Math.max(.1,p.wc/10);p.ch=0;p.lp=0;bacc-=20;ch=1}}}
+else if(bt=='chain'){bacc+=dx;if(bacc>40&&!p.ch){if(S.st.t<2)return toast('Нужно 2 материала');S.st.t-=2;p.ch=1;p.lp=0;p.susp=.9;p.wc=0;ch=1}}
+else if(bt=='refill'){if(!p.open)return toast('Сначала раскрути ручку (🔧)');if(x>20){p.rl=Math.max(.5,Math.min(p.rl||1,(x-12)/276));ch=1}}
+else if(bt=='loop'){bacc+=dx;if(bacc>40&&!p.lp){if((p.rl||1)>.95)return toast('Сначала обрежь стержень ✂');if(p.open)return toast('Закрути ручку обратно');if(S.st.t<1)return toast('Нужен материал (скоч)');S.st.t--;p.lp=1;p.ch=0;p.wc=0;p.susp=.6;ch=1}}
+if(ch){$('bz').innerHTML=svg(p);$('bs').innerHTML=bstat(p)}}
+function unwire(){const p=sel();p.wc=0;p.susp=0;p.ch=0;p.lp=0;sv();go()}
+function bench(){const p=sel();if(!p)return '<div class="card">Нет ручек — купи корпус во вкладке «Магазин».</div>';if(p.g!='tape'){p.g='tape';p.gc=0}const gt=G.tape,T=[['wind','🧵 Мотать'],['unwind','✂ Снять обмотку'],['cap','✂ Колпачок'],['open','🔧 Раскрутить'],['wire','➰ Проволока'],['refill','✂ Стержень'],['loop','🔁 Скоч-петля'],['chain','⛓ Цепочка']];
+return `<div class="card">${pick()}<div class="penw"><div id="bz" style="width:100%;touch-action:none" onpointerdown="bdown(event)" onpointermove="bmove(event)" onpointerup="bup()" onpointercancel="bup()">${svg(p)}</div></div><div class="row">${T.map(([k,n])=>`<button class="${bt==k?'on':''}" onclick="bt='${k}';go()">${n}</button>`).join('')}</div><div class="m" style="margin-top:6px">${HINT[bt]}</div><div id="bs">${bstat(p)}</div></div>
+<div class="card"><h4>Цвет обмотки</h4><div class="m">В запасе: ${S.st.t} шт. Каждый полный слой забирает 1 шт.</div><div class="row">${gt.c.map((c,i)=>`<button class="dot ${p.gc==i?'on':''}" style="background:${c}" onclick="sel().gc=${i};go()"></button>`).join('')}</div></div>
+<div class="card"><h4>Тюнинг</h4><div class="row"><button class="${p.lf?'on':''}" onclick="tg('lf')">Мини люфт</button><button class="${p.im?'on':''}" onclick="tg('im')">Пропитка (${S.st.im||0})</button><button class="${p.sn?'on':''}" onclick="tg('sn')">Крутилка (${S.st.kr||0})</button></div></div>
+<div class="card"><h4>Стержень</h4><div class="m">${p.open?'Ручка раскручена — выбери стержень':'Сначала раскрути ручку (инструмент 🔧)'}</div><div class="row">${Object.entries(S.st.r).filter(e=>e[1]>0).map(([k,c])=>`<button onclick="swap('${k}')">${gR(k).n} ×${c}</button>`).join('')||'<span class="m">нет запасных</span>'}</div>${S.n>=50?`<div class="row"><span>Свои чернила</span><input type="color" value="${p.ink||'#1030a0'}" onchange="sel().ink=this.value;sv();go()"></div>`:`<div class="m" style="margin-top:6px">Свои чернила — после 50 ручек (${S.n}/50)</div>`}</div>
+<div class="card"><div class="row"><button onclick="unwire()">Снять проволоку / цепочку</button></div><button class="p" style="width:100%;margin-top:8px" onclick="fin()">Завершить сборку (+1 в счёт)</button></div>`}
+function chain(){const p=sel();if(S.st.t<2)return toast('Нужно 2 материала');S.st.t-=2;p.ch=1;p.susp=.9;sv();go()}
+function gm(k){const p=sel();p.g=k;p.gc=0;sv();go()}
+function wr(d){const p=sel();if(d>0){if(S.st.t<1)return toast('Нет материала');if(p.gl>=5)return toast('Дальше некуда');S.st.t--;p.gl++}else p.gl=d<-1?0:Math.max(0,p.gl-1);sv();go()}
+function cap(m){const p=sel();p.cap=m?0:p.cap==1?.7:p.cap==.7?.4:0;sv();go()}
+function swap(k){const p=sel();if(!p.open)return toast('Сначала раскрути ручку (🔧)');p.rl=1;S.st.r[p.r]=(S.st.r[p.r]||0)+1;S.st.r[k]--;p.r=k;sv();go()}
+function fin(){const p=sel();if(p.open)return toast('Закрути ручку обратно');if(p.done)return toast('Уже засчитана');p.done=1;S.n++;sv();go();toast('Ручка собрана!')}
+function buy(t,id,c){if(S.m<c)return toast('Не хватает денег');S.m-=c;if(t=='t')S.st.t++;else if(t=='sp')S.st.sp++;else if(t=='im'||t=='kr')S.st[t]=(S.st[t]||0)+1;else if(t=='r')S.st.r[id]=(S.st.r[id]||0)+1;else S.pens.push(mk(id,'g5'));sv();go()}
+/* spring suspension minigame */
+let mg=null;
+function mgStart(){const p=sel();if(S.st.sp<1)return toast('Нужна пружинка — купи в магазине');S.st.sp--;sv();head();mg={n:0,h:0,pos:0,d:1,off:[],run:1,p,last:performance.now()};const d=document.createElement('div');d.id='mg';d.innerHTML=`<div class="card"><h4>Навивай пружинку</h4><div class="m">Жми «Виток», когда маркер в зелёной зоне</div><svg id="ms" viewBox="0 0 280 90" style="width:100%"></svg><div class="trk"><div class="zn" id="zn"></div><div class="mk" id="mk"></div></div><button class="p" style="width:100%;font-size:18px" onclick="mgTap()">Виток <span id="mc">0/8</span></button></div>`;document.body.appendChild(d);mgDraw();requestAnimationFrame(mgLoop)}
+const mzw=()=>Math.max(.1,.22-mg.n*.015);
+function mgLoop(t){if(!mg||!mg.run)return;const dt=(t-mg.last)/1000;mg.last=t;mg.pos+=mg.d*dt*(.7+mg.n*.12);if(mg.pos>1||mg.pos<0){mg.d*=-1;mg.pos=Math.min(1,Math.max(0,mg.pos))}$('mk').style.left=mg.pos*92+'%';const z=$('zn'),w=mzw();z.style.left=(.5-w/2)*100+'%';z.style.width=w*100+'%';requestAnimationFrame(mgLoop)}
+function mgTap(){if(!mg||!mg.run)return;const hit=Math.abs(mg.pos-.46)<mzw()/2+.02;mg.off.push(hit?0:(Math.random()<.5?-1:1)*(6+Math.random()*10));if(hit)mg.h++;mg.n++;$('mc').textContent=mg.n+'/8';mgDraw();if(mg.n>=8){mg.run=0;const q=mg.h/8;mg.p.susp=Math.max(.15,q);mg.p.ch=0;sv();setTimeout(()=>{$('mg').remove();mg=null;go();toast('Подвеска готова: качество '+Math.round(q*100)+'%')},700)}}
+function mgDraw(){let o='<line x1="10" y1="45" x2="270" y2="45" stroke="#999" stroke-width="3" stroke-linecap="round"/>';mg.off.forEach((f,i)=>{o+=`<ellipse cx="${30+i*28}" cy="${45+f}" rx="7" ry="${26-Math.abs(f)}" fill="none" stroke="${f?'#d46':'#8e949e'}" stroke-width="3.5" transform="rotate(${f*1.5} ${30+i*28} 45)"/>`});$('ms').innerHTML=o}
+/* TEST */
+let press=false,rtxt='';
+function test(){const p=sel();if(!p)return '';if(p.open)return '<div class="card">Ручка раскручена — закрути её в мастерской.</div>';setTimeout(initT,0);return `<div id="stage"><canvas id="paper"></canvas><div id="pn"></div></div><div class="m" id="rep" style="margin:0 14px"></div>`}
+function sus(p){return !p.susp?'подвески нет — проверять нечего':p.susp>=.75?'держит крепко':p.susp>=.4?'дребезжит, но держится':'еле держится, может слететь'}
+function tb(){$('b1').className=press?'':'on';$('b2').className=press?'on':'';const n=$('pn'),p=sel();if(n)n.className=press?'h':'';if($('rep'))$('rep').textContent=press?'Проверка подвески: '+sus(p):rtxt}
+function initT(){const cv=$('paper');if(!cv)return;$('fx').innerHTML='<div id="pb"><button id="b1" class="on" onclick="press=false;tb()">Писать</button><button id="b2" onclick="press=true;tb()">Сильно нажать</button></div><div id="pad">двигай пальцем здесь</div>';const pd=$('pad'),st=$('stage'),pn=$('pn');cv.width=st.clientWidth;cv.height=st.clientHeight;const x=cv.getContext('2d');x.lineCap='round';const p=sel(),r=gR(p.r),k=1;pn.innerHTML=svg(p);pn.style.width=340*k+'px';
+let px=st.clientWidth*.4,py=st.clientHeight*.6;const mv=()=>{const j=p.lf?(Math.random()-.5)*4:0;pn.style.transform=`translate(${px+j}px,${py+j}px) rotate(${-48+(p.lf?(Math.random()-.5)*3:0)}deg) scale(${press?.97:1})`};mv();
+rtxt=`${r.n}: ${r.s>.9?'плавно':r.s>.8?'нормально':'местами царапает'} · хват ${Math.round(comfort(p)*100)}%`;$('rep').textContent=rtxt;let ps=0;
+let last=null;const pt=e=>{const q=pd.getBoundingClientRect();return[(e.clientX-q.left)/q.width*cv.width,(e.clientY-q.top)/q.height*cv.height]};
+try{screen.orientation.lock('landscape')}catch(e){}
+pd.onpointerdown=e=>{pd.setPointerCapture(e.pointerId);last=pt(e);[px,py]=last;mv()};pd.onpointerup=()=>last=null;
+pd.onpointermove=e=>{if(!last)return;const n=pt(e);if(Math.random()<Math.min(1,r.s+(p.im?.1:0))*(press?.8:1)*(.5+comfort(p)/2)){x.strokeStyle=p.ink||'#14206a';x.globalAlpha=press?1:.85;x.lineWidth=r.w*(press?2.2:1.2)*(.9+Math.random()*.2);x.beginPath();x.moveTo(...last);x.lineTo(...n);x.stroke()}last=n;[px,py]=n;mv();if(press&&p.susp){ps++;if(p.susp<.4&&ps>45){p.susp=0;sv();pn.innerHTML=svg(p);$('rep').textContent='Подвеска слетела!';toast('Подвеска слетела — делай аккуратнее')}}}}
+/* MARKET */
+const names=['Тихоня','Грифель','Монах','Босс','Ночная','Короткая','Ушастая','Глыба'];
+let bots=null;function mkBots(){const o=[];for(let i=0;i<8;i++){const p=mk(B[Math.random()*5|0].id,R[Math.random()*7|0].id);p.g=Object.keys(G)[Math.random()*4|0];p.gl=Math.random()*5|0;p.cap=[1,.7,.4,0][Math.random()*4|0];p.susp=Math.random()<.4?Math.random():0;o.push({k:'pen',p,ag:Math.random()<.4,t:names[i],price:Math.round(val(p)*(.85+Math.random()*.4))})}
+for(let i=0;i<3;i++){const r=R[Math.random()*7|0];o.push({k:'ref',r:r.id,ag:Math.random()<.4,t:'Стержень: '+r.n,price:Math.round(r.v*(.8+Math.random()*.5))})}return o}
+bots=mkBots();
+let fl={t:'',d:'',pi:0,pr:100};
+function mkt(){return `<div class="card"><h4>Продать на «Ручкин Двор»</h4><select style="width:100%" onchange="fl.pi=+this.value">${S.pens.map((p,i)=>`<option value="${i}" ${i==fl.pi?'selected':''}>${gB(p.b).n} · ${val(p)}₽</option>`).join('')}</select><div class="row"><input id="ft" placeholder="Название" value="${fl.t}" oninput="fl.t=this.value"><input placeholder="Описание" value="${fl.d}" oninput="fl.d=this.value"><input type="number" style="width:90px" value="${fl.pr}" oninput="fl.pr=+this.value"><button class="p" onclick="post()">Выложить</button></div></div>`+
+S.L.map((l,i)=>`<div class="card">${wrap(l.p,'sm')}<b>${l.t}</b> — ${l.pr}₽<div class="m">${l.d}</div>${l.o.map((o,j)=>`<div class="card"><span class="m">${o.ag?'😠 агрессивный':'🙂 нормальный'}:</span> ${o.msg}<div class="row"><button class="p" onclick="acc(${i},${j})">Принять</button><button onclick="ctr(${i},${j})">Торг +15%</button><button onclick="S.L[${i}].o.splice(${j},1);go()">Отказ</button></div></div>`).join('')||'<div class="m">Ждём покупателей…</div>'}</div>`).join('')+
+`<div class="card"><h4>Объявления ботов</h4></div>`+bots.map((b,i)=>`<div class="card">${b.k=='pen'?wrap(b.p,'sm'):''}<b>${b.t}</b> — ${b.price}₽ ${b.ag?'😠':'🙂'}<div class="m">${b.k=='pen'?gB(b.p.b).n+' · '+gR(b.p.r).n+' · '+desc(b.p):'деталь'}</div><div class="row"><button onclick="bb(${i})">Купить</button><button onclick="tr(${i})">Обмен на мою</button>${b.ask?`<button class="p" onclick="pay(${i})">Доплатить ${b.ask}₽</button>`:''}</div></div>`).join('')}
+function post(){const p=S.pens[fl.pi];if(!p||!fl.t)return toast('Введи название');S.L.push({p:JSON.parse(JSON.stringify(p)),t:fl.t,d:fl.d,pr:fl.pr,o:[]});S.pens.splice(fl.pi,1);fl={t:'',d:'',pi:0,pr:100};sv();go()}
+function bb(i){const b=bots[i];if(S.m<b.price)return toast('Не хватает денег');S.m-=b.price;b.k=='pen'?S.pens.push(b.p):S.st.r[b.r]=(S.st.r[b.r]||0)+1;bots.splice(i,1);sv();go()}
+function tr(i){const b=bots[i];if(b.k!='pen')return toast('Обмен только на ручки');const need=val(b.p)*(b.ag?1.1:.95),v=val(sel());if(v>=need){S.pens.splice(S.sel,1,b.p);bots.splice(i,1);toast('Обмен состоялся')}else{b.ask=Math.ceil(need-v);toast('Бот просит доплату '+b.ask+'₽')}sv();go()}
+function pay(i){const b=bots[i];if(S.m<b.ask)return toast('Не хватает денег');S.m-=b.ask;S.pens.splice(S.sel,1,b.p);bots.splice(i,1);sv();go()}
+function offer(l){const v=val(l.p),ag=Math.random()<.4,k=Math.random();let o;
+if(k<.55)o={ag,lim:l.pr*(ag?.8:1),a:Math.round(l.pr*(ag?.5+Math.random()*.2:.8+Math.random()*.2)),t:'m'};else if(k<.8){const q=mk(B[Math.random()*B.length|0].id,R[Math.random()*7|0].id);o={ag,t:'s',q,a:Math.max(0,Math.round(v*.9-val(q))),lim:0}}else{const r=R[Math.random()*7|0];o={ag,t:'r',r:r.id,a:Math.round(l.pr*.6),lim:l.pr*.9}}
+o.msg=o.t=='m'?`${o.a}₽ за ручку`:o.t=='s'?`меняю на ${gB(o.q.b).n}/${gR(o.q.r).n}${o.a>0?' + доплата '+o.a+'₽':''}`:`${o.a}₽ + стержень ${gR(o.r).n}`;l.o.push(o)}
+function acc(i,j){const o=S.L[i].o[j];if(o.t=='s')S.pens.push(o.q);if(o.t=='r')S.st.r[o.r]=(S.st.r[o.r]||0)+1;S.m+=o.a;S.L.splice(i,1);sv();go();toast('Сделка!')}
+function ctr(i,j){const o=S.L[i].o[j],w=Math.round((o.a||50)*1.15);if(o.t=='s'||w<=o.lim||(!o.ag&&Math.random()<.5)){o.a=w;o.t='m';o.msg='ок, '+w+'₽ — согласен'}else if(o.ag){S.L[i].o.splice(j,1);toast('Ушёл: «ну и сиди»')}else toast('Не готов столько платить');sv();go()}
+setInterval(()=>{let c=0;S.L.forEach(l=>{if(l.o.length<3&&Math.random()<.5){offer(l);c=1}});if(c){sv();if(S.tab=='m'&&!document.activeElement.matches('input,select'))go()}},4000);
+function stor(){return `<div class="card"><h4>Ручки (${S.pens.length})</h4></div>`+S.pens.map((p,i)=>`<div class="card">${wrap(p,'sm')}<div class="row"><span>${gB(p.b).n} · ${val(p)}₽</span><button onclick="S.sel=${i};S.tab='w';go()">В мастерскую</button></div><div class="m">${desc(p)}</div></div>`).join('')+`<div class="card m">Стержни: ${Object.entries(S.st.r).map(([k,c])=>gR(k).n+' ×'+c).join(', ')||'—'}<br>Материал: ${S.st.t} · Пружинки: ${S.st.sp}</div>`}
+function setg(){return `<div class="card"><h4>Настройки</h4><div class="m">Растяг экрана по ширине: <b id="sv">${S.set.st}</b>% (как растянутое разрешение: картинка шире, а не крупнее)</div><input type="range" min="80" max="160" value="${S.set.st}" style="width:100%;padding:0" oninput="S.set.st=+this.value;$('sv').textContent=this.value;applyS();sv()"><div class="row"><button onclick="S.set.snow=S.set.snow===false;sv();go()">❄ Снег: ${S.set.snow===false?'выкл':'вкл'}</button></div><div class="row"><button onclick="if(confirm('Сбросить игру?')){localStorage.removeItem('pg2');location.reload()}">Сбросить прогресс</button></div></div>`}
+function go(){applyS();const ch=lastTab!=S.tab;lastTab=S.tab;$('fx').innerHTML='';head();$('app').className=ch?'an':'';$('app').innerHTML=({w:bench,t:test,m:mkt,s:stor,sh:shop,x:setg})[S.tab]()}
+let lastTab;function applyS(){const k=Math.max(.8,Math.min(1.6,S.set.st/100)),r=$('root');r.style.transform=`scaleX(${k})`;r.style.width=100/k+'%'}
+const sn=document.createElement('canvas');sn.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:8';document.body.appendChild(sn);
+let fk=[];function snowInit(){sn.width=innerWidth;sn.height=innerHeight;fk=Array.from({length:70},()=>({x:Math.random()*sn.width,y:Math.random()*sn.height,r:1.5+Math.random()*2.5,v:.4+Math.random()*1.1,p:Math.random()*6}))}
+function snowLoop(){const c=sn.getContext('2d');c.clearRect(0,0,sn.width,sn.height);if(S.set.snow!==false){c.fillStyle='rgba(255,255,255,.95)';c.strokeStyle='rgba(110,140,200,.55)';fk.forEach(f=>{f.y+=f.v;f.p+=.02;f.x+=Math.sin(f.p)*.5;if(f.y>sn.height){f.y=-5;f.x=Math.random()*sn.width}c.beginPath();c.arc(f.x,f.y,f.r,0,7);c.fill();c.stroke()})}requestAnimationFrame(snowLoop)}
+addEventListener('resize',snowInit);snowInit();snowLoop();
+function test(){const p=sel();if(!p)return '';if(p.open)return '<div class="card">Ручка раскручена — закрути её в мастерской.</div>';return `<div class='card'><h4>Тест ручки</h4>${wrap(p,'sm')}<div class='m'>${desc(p)}</div><div class='m' style='margin:8px 0'>Тест идёт в горизонтальном режиме: экран сам повернётся. Справа внизу поле движения ручки, кнопки «Писать» и «Сильно нажать».</div><button class='p' style='width:100%;font-size:17px;padding:12px' onclick='openT()'>▶ Начать тест</button></div>`}
+function closeT(){const d=$('tv');if(d)d.remove()}
+function head(){$('hd').innerHTML=`<span>💰 ${S.m} ₽</span><span>✔ ${S.n}</span>`;const nv=$('nav'),T=[['w','🛠','Мастерская'],['t','✍','Тест'],['m','🏷','Рынок'],['s','🎒','Склад'],['sh','🛒','Магазин'],['x','⚙','Настр.']];
+if(!nv.querySelector('.hl')){nv.innerHTML=`<i class='hl'></i>`+T.map(([k,i,n])=>`<button data-k='${k}'><span class='ic'>${i}</span><small>${n}</small></button>`).join('');nv.onclick=e=>{const b=e.target.closest('button');if(b){S.tab=b.dataset.k;go()}}}
+nv.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.k==S.tab));const a=nv.querySelector('button.on'),h=nv.querySelector('.hl');if(a){h.style.left=a.offsetLeft+'px';h.style.width=a.offsetWidth+'px'}}
+const D={st:100,z:100,bl:18,fb:0};
+function applyS(){const k=Math.max(.8,Math.min(1.6,S.set.st/100)),z=(S.set.z||100)/100,r=$('root'),s=document.documentElement.style;r.style.zoom=z;r.style.transform=`scaleX(${k})`;r.style.width=100/k+'%';r.style.minHeight=`calc(100dvh / ${z})`;s.setProperty('--bl',(S.set.bl??18)+'px');s.setProperty('--fb',(S.set.fb||0)+'px')}
+function setg(){const sl=(n,k,a,b,u)=>`<div class='m' style='margin-top:10px'>${n}: <b>${S.set[k]??D[k]}</b>${u}</div><input type='range' min='${a}' max='${b}' value='${S.set[k]??D[k]}' style='width:100%;padding:0' oninput="S.set.${k}=+this.value;this.previousElementSibling.querySelector('b').textContent=this.value;applyS();sv()">`;
+return `<div class='card'><h4>Экран</h4>${sl('Растяг экрана по ширине','st',80,160,'%')}<div class='m'>Как растянутое разрешение: картинка шире, а не крупнее.</div>${sl('Масштаб интерфейса','z',70,140,'%')}<div class='m'>Крупнее или мельче, форма не меняется. С растягом не связан.</div></div><div class='card'><h4>Эффекты</h4>${sl('Размытость стекла','bl',0,40,' px')}${sl('Размытие всего экрана','fb',0,8,' px')}<div class='row'><button onclick='S.set.snow=S.set.snow===false;sv();go()'>❄ Снег: ${S.set.snow===false?'выкл':'вкл'}</button></div></div><div class='card'><button onclick="if(confirm('Сбросить игру?')){localStorage.removeItem('pg2');location.reload()}">Сбросить прогресс</button></div>`}
+let mp=0;
+function mkBots(n=60){const A=['Синяя','Тихая','Быстрая','Мягкая','Колючая','Ночная','Школьная','Ушастая','Тяжёлая','Лёгкая'],N=['молния','классика','кастомка','бомба','малышка','гроза','комета','змейка','скала','ракета'],X=['Писала всего неделю','Мягкий хват, писать одно удовольствие','Отдам недорого','Собирал сам','Почти не писала','Срочно, нужны деньги','Берите, не пожалеете','Обмен возможен'],o=[];
+for(let i=0;i<n;i++){const t=A[Math.random()*10|0]+' '+N[Math.random()*10|0],x=X[Math.random()*8|0],ag=Math.random()<.4,k=Math.random();
+if(k<.75){const p=mk(B[Math.random()*B.length|0].id,R[Math.random()*7|0].id);p.g='tape';p.gc=Math.random()*10|0;p.gl=Math.random()*6|0;p.gp=p.gl;p.cap=[1,.7,.4,0][Math.random()*4|0];p.susp=Math.random()<.4?Math.random():0;p.lf=Math.random()<.2?1:0;p.im=Math.random()<.2?1:0;o.push({k:'pen',p,ag,t:gB(p.b).n+(p.gl||p.susp?' кастом':''),x,price:Math.round(val(p)*(.85+Math.random()*.4))})}
+else if(k<.9){const r=R[Math.random()*7|0];o.push({k:'ref',r:r.id,ag,t:'Стержень: '+r.n,x,price:Math.round(r.v*(.8+Math.random()*.5))})}
+else{const q=(2+Math.random()*6)|0;o.push({k:'mat',n:q,ag,t:'Материал для обмотки ×'+q,x,price:q*(15+((Math.random()*8)|0))})}}return o}
+function bb(i){const b=bots[i];if(S.m<b.price)return toast('Не хватает денег');S.m-=b.price;if(b.k=='pen')S.pens.push(b.p);else if(b.k=='mat')S.st.t+=b.n;else S.st.r[b.r]=(S.st.r[b.r]||0)+1;bots.splice(i,1);sv();go()}
+function mkt(){while(bots.length<50)bots.push(...mkBots(10));const pg=Math.ceil(bots.length/10);if(mp>=pg)mp=pg-1;const pager=`<div class='row'>${Array.from({length:pg},(_,i)=>`<button class='${i==mp?'on':''}' onclick='mp=${i};go()'>${i+1}</button>`).join('')}</div>`;
+return `<div class='card'><h4>Продать на «Ручкин Двор»</h4><select style='width:100%' onchange='fl.pi=+this.value'>${S.pens.map((p,i)=>`<option value='${i}' ${i==fl.pi?'selected':''}>${gB(p.b).n} · ${val(p)}₽</option>`).join('')}</select><div class='row'><input placeholder='Название' value='${fl.t}' oninput='fl.t=this.value'><input placeholder='Описание' value='${fl.d}' oninput='fl.d=this.value'><input type='number' style='width:90px' value='${fl.pr}' oninput='fl.pr=+this.value'><button class='p' onclick='post()'>Выложить</button></div></div>`+
+S.L.map((l,i)=>`<div class='card'>${wrap(l.p,'sm')}<b>${l.t}</b> — ${l.pr}₽<div class='m'>${l.d}</div>${l.o.map((o,j)=>`<div class='card'><span class='m'>Предложение:</span> ${o.msg}<div class='row'><button class='p' onclick='acc(${i},${j})'>Принять</button><button onclick='ctr(${i},${j})'>Торг +15%</button><button onclick='S.L[${i}].o.splice(${j},1);go()'>Отказ</button></div></div>`).join('')||`<div class='m'>Ждём покупателей…</div>`}</div>`).join('')+
+`<div class='card'><h4>Объявления</h4><div class='m'>Страница ${mp+1} из ${pg}</div>${pager}</div>`+bots.slice(mp*10,mp*10+10).map((b,j)=>{const i=mp*10+j;return `<div class='card'>${b.k=='pen'?wrap(b.p,'sm'):''}<b>${b.t}</b> — ${b.price}₽<div class='m'>${b.k=='pen'?gB(b.p.b).n+' · '+gR(b.p.r).n+' · '+desc(b.p):'деталь'}</div><div class='m'>«${b.x}»</div><div class='row'><button onclick='bb(${i})'>Купить</button><button onclick='tr(${i})'>Обмен на мою</button>${b.ask?`<button class='p' onclick='pay(${i})'>Доплатить ${b.ask}₽</button>`:''}</div></div>`}).join('')+`<div class='card'>${pager}</div>`}
+function openT(){const p=sel(),iw=innerWidth,ih=innerHeight,rot=ih>iw,k=Math.max(.8,Math.min(1.6,S.set.st/100)),W=(rot?ih:iw)/k,H=rot?iw:ih,r=gR(p.r);closeT();const d=document.createElement('div');d.id='tv';
+d.style.cssText=`position:fixed;left:0;top:0;width:${W}px;height:${H}px;z-index:60;overflow:hidden;background:#fffdf5;background-image:linear-gradient(#cfe0f3 1px,transparent 1px),linear-gradient(90deg,#cfe0f3 1px,transparent 1px);background-size:22px 22px;transform-origin:0 0;transform:${rot?`translateX(${iw}px) rotate(90deg) `:''}scaleX(${k});`;
+d.innerHTML=`<canvas id='tc' width='${W}' height='${H}' style='position:absolute;inset:0'></canvas><div id='tp' style='position:absolute;left:0;top:0;width:${Math.min(340,W*.42)}px;transform-origin:0 33%;transition:transform .07s linear;pointer-events:none'></div><div style='position:absolute;left:10px;top:10px;display:flex;gap:8px;align-items:center'><button id='tx'>✕ Выйти</button><span id='tr' class='m' style='background:#fffc;padding:6px 10px;border-radius:10px;font-size:13px'></span></div><div style='position:absolute;right:12px;bottom:${H*.4+22}px;display:flex;gap:8px'><button id='t1' class='on'>Писать</button><button id='t2'>Сильно нажать</button></div><div id='tpad' style='position:absolute;right:12px;bottom:12px;width:${Math.min(W*.36,320)}px;height:${H*.4}px;border:2.5px solid #111;border-radius:16px;background:#ffffffe0;touch-action:none;display:flex;align-items:center;justify-content:center;color:#777;box-shadow:4px 4px 0 #111'>двигай пальцем здесь</div>`;
+document.body.appendChild(d);const cv=$('tc'),x=cv.getContext('2d'),pn=$('tp'),pd=$('tpad');x.lineCap='round';pn.innerHTML=svg(p);pn.querySelectorAll('.sg').forEach(g=>g.style.setProperty('--base','48deg'));
+let pr=false,px=W*.3,py=H*.6,last=null,ps=0;const txt=`${r.n}: ${r.s>.9?'плавно':r.s>.8?'нормально':'местами царапает'} · хват ${Math.round(comfort(p)*100)}%`;$('tr').textContent=txt;
+const mv=()=>{const j=p.lf?(Math.random()-.5)*4:0;pn.style.transform=`translate(${px+j}px,${py+j-pn.offsetHeight*.333}px) rotate(${-48+(p.lf?(Math.random()-.5)*3:0)}deg) scale(${pr?.97:1})`};mv();
+const sw=v=>{pr=v;$('t1').className=v?'':'on';$('t2').className=v?'on':'';pn.className=v?'h':'';$('tr').textContent=v?'Проверка подвески: '+sus(p):txt};
+$('t1').onclick=()=>sw(false);$('t2').onclick=()=>sw(true);$('tx').onclick=closeT;
+const loc=e=>{const lx=(rot?e.clientY:e.clientX)/k,ly=rot?iw-e.clientX:e.clientY;return[(lx-pd.offsetLeft)/pd.offsetWidth*W,(ly-pd.offsetTop)/pd.offsetHeight*H]};
+pd.onpointerdown=e=>{pd.setPointerCapture(e.pointerId);last=loc(e);[px,py]=last;mv()};pd.onpointerup=pd.onpointercancel=()=>last=null;
+pd.onpointermove=e=>{if(!last)return;const n=loc(e);if(Math.random()<Math.min(1,r.s+(p.im?.1:0))*(pr?.8:1)*(.5+comfort(p)/2)){x.strokeStyle=p.ink||'#14206a';x.globalAlpha=pr?1:.85;x.lineWidth=r.w*(pr?2.2:1.2)*(.9+Math.random()*.2);x.beginPath();x.moveTo(...last);x.lineTo(...n);x.stroke()}last=n;[px,py]=n;mv();if(pr&&p.susp){ps++;if(p.susp<.4&&ps>45){p.susp=0;sv();pn.innerHTML=svg(p);$('tr').textContent='Подвеска слетела!';toast('Подвеска слетела — делай аккуратнее')}}}}
+go();
+</script></body></html>
